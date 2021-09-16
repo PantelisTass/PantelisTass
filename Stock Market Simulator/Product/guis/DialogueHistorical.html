@@ -1,0 +1,232 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>DialogueHistorical.java</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+body {color: #000000; background-color: #ffffff; font-family: Monospaced}
+pre {color: #000000; background-color: #ffffff; font-family: Monospaced}
+table {color: #000000; background-color: #e9e8e2; font-family: Monospaced}
+.ST0 {color: #969696; font-family: Monospaced; font-weight: bold}
+.ST1 {font-family: Monospaced; font-weight: bold}
+.comment {color: #969696}
+.ST2 {color: #009900}
+.ST5 {font-family: Monospaced; font-weight: bold; font-style: italic}
+.ST3 {color: #009900; font-family: Monospaced; font-style: italic}
+.ST4 {font-family: Monospaced; font-style: italic}
+.literal {color: #0000e6}
+.string {color: #ce7b00}
+-->
+</style>
+</head>
+<body>
+<table width="100%"><tr><td align="center">C:\Users\pade\Dropbox\Stocks\src\guis\DialogueHistorical.java</td></tr></table>
+<pre>
+  1 <span class="comment">/*</span>
+  2 <span class="comment"> * To change this license header, choose License Headers in Project Properties.</span>
+  3 <span class="comment"> * To change this template file, choose Tools | Templates</span>
+  4 <span class="comment"> * and open the template in the editor.</span>
+  5 <span class="comment"> */</span>
+  6 <span class="literal">package</span> guis;
+  7 
+  8 <span class="literal">import</span> StockAnalysis.LineChart;
+  9 <span class="literal">import</span> java.text.ParseException;
+ 10 <span class="literal">import</span> java.util.logging.Level;
+ 11 <span class="literal">import</span> java.util.logging.Logger;
+ 12 <span class="literal">import</span> StockAnalysis.StockAnalysisTool;
+ 13 <span class="literal">import</span> java.beans.PropertyVetoException;
+ 14 
+ 15 <span class="comment">/**</span>
+ 16 <span class="comment"> *</span>
+ 17 <span class="comment"> * </span><span class="ST0">@author</span> <span class="comment">pade</span>
+ 18  <span class="comment">*/</span>
+ 19 <span class="literal">public</span> <span class="literal">class</span> <span class="ST1">DialogueHistorical</span> <span class="literal">extends</span> javax.swing.JDialog {
+ 20 
+ 21     <span class="comment">/**</span>
+ 22 <span class="comment">     * </span><span class="comment">Creates</span> <span class="comment">new</span> <span class="comment">form</span> <span class="comment">Dialogue</span> <span class="comment">that</span> <span class="comment">enables</span> <span class="comment">user</span> <span class="comment">to</span> <span class="comment">view</span> <span class="comment">historical</span> <span class="comment">stock</span> <span class="comment">time</span> <span class="comment">series</span> <span class="comment">of</span> <span class="comment">a</span> <span class="comment">particular</span> <span class="comment">company</span>
+ 23      <span class="comment">*/</span>
+ 24     <span class="literal">public</span> <span class="ST1">DialogueHistorical</span>(java.awt.Frame parent, <span class="literal">boolean</span> modal) {
+ 25         <span class="literal">super</span>(parent, modal);
+ 26         initComponents();
+ 27     }
+ 28     
+ 29     <span class="ST1">DialogueHistorical</span>(String title){
+ 30     
+ 31     setTitle(title);
+ 32     initComponents();
+ 33     
+ 34     }
+ 35 
+ 36     <span class="comment">/**</span>
+ 37 <span class="comment">     * </span><span class="ST0">This</span> <span class="ST0">method</span> <span class="ST0">is</span> <span class="ST0">called</span> <span class="ST0">from</span> <span class="ST0">within</span> <span class="ST0">the</span> <span class="ST0">constructor</span> <span class="ST0">to</span> <span class="ST0">initialize</span> <span class="ST0">the</span> <span class="ST0">form</span><span class="ST0">.</span>
+ 38 <span class="comment">     * </span><span class="comment">WARNING</span><span class="comment">: </span><span class="comment">Do</span> <span class="comment">NOT</span> <span class="comment">modify</span> <span class="comment">this</span> <span class="comment">code</span><span class="comment">.</span> <span class="comment">The</span> <span class="comment">content</span> <span class="comment">of</span> <span class="comment">this</span> <span class="comment">method</span> <span class="comment">is</span> <span class="comment">always</span>
+ 39 <span class="comment">     * </span><span class="comment">regenerated</span> <span class="comment">by</span> <span class="comment">the</span> <span class="comment">Form</span> <span class="comment">Editor</span><span class="comment">.</span>
+ 40      <span class="comment">*/</span>
+ 41     @SuppressWarnings(<span class="string">&quot;</span><span class="string">unchecked</span><span class="string">&quot;</span>)
+ 42     <span class="comment">// &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Generated Code&quot;&gt;                          </span>
+ 43     <span class="literal">private</span> <span class="literal">void</span> <span class="ST1">initComponents</span>() {
+ 44 
+ 45         <span class="ST2">jLabel5</span> = <span class="literal">new</span> javax.swing.JLabel();
+ 46         <span class="ST2">textField1</span> = <span class="literal">new</span> java.awt.TextField();
+ 47         <span class="ST2">jLabel1</span> = <span class="literal">new</span> javax.swing.JLabel();
+ 48         <span class="ST2">button1</span> = <span class="literal">new</span> java.awt.Button();
+ 49         <span class="ST2">jLabel3</span> = <span class="literal">new</span> javax.swing.JLabel();
+ 50         <span class="ST2">jLabel4</span> = <span class="literal">new</span> javax.swing.JLabel();
+ 51         <span class="ST2">jFormattedTextField1</span> = <span class="literal">new</span> javax.swing.JFormattedTextField();
+ 52         <span class="ST2">jFormattedTextField2</span> = <span class="literal">new</span> javax.swing.JFormattedTextField();
+ 53 
+ 54         <span class="ST2">jLabel5</span>.setText(<span class="string">&quot;</span><span class="string">End Date</span><span class="string">&quot;</span>);
+ 55 
+ 56         setDefaultCloseOperation(javax.swing.WindowConstants.<span class="ST3">DISPOSE_ON_CLOSE</span>);
+ 57 
+ 58         <span class="ST2">textField1</span>.addActionListener(<span class="literal">new</span> java.awt.event.ActionListener() {
+ 59             <span class="literal">public</span> <span class="literal">void</span> <span class="ST1">actionPerformed</span>(java.awt.event.ActionEvent evt) {
+ 60                 textField1ActionPerformed(evt);
+ 61             }
+ 62         });
+ 63 
+ 64         <span class="ST2">jLabel1</span>.setText(<span class="string">&quot;</span><span class="string">Start Date </span><span class="string">&quot;</span>);
+ 65 
+ 66         <span class="ST2">button1</span>.setLabel(<span class="string">&quot;</span><span class="string">OK</span><span class="string">&quot;</span>);
+ 67         <span class="ST2">button1</span>.addActionListener(<span class="literal">new</span> java.awt.event.ActionListener() {
+ 68             <span class="literal">public</span> <span class="literal">void</span> <span class="ST1">actionPerformed</span>(java.awt.event.ActionEvent evt) {
+ 69                 <span class="literal">try</span> {
+ 70                     button1ActionPerformed(evt);
+ 71                 } <span class="literal">catch</span> (PropertyVetoException ex) {
+ 72                     Logger.<span class="ST4">getLogger</span>(DialogueHistorical.<span class="literal">class</span>.getName()).log(Level.<span class="ST3">SEVERE</span>, <span class="literal">null</span>, ex);
+ 73                 }
+ 74             }
+ 75         });
+ 76 
+ 77         <span class="ST2">jLabel3</span>.setText(<span class="string">&quot;</span><span class="string">Company Name </span><span class="string">&quot;</span>);
+ 78 
+ 79         <span class="ST2">jLabel4</span>.setText(<span class="string">&quot;</span><span class="string">End Date</span><span class="string">&quot;</span>);
+ 80 
+ 81         javax.swing.GroupLayout layout = <span class="literal">new</span> javax.swing.GroupLayout(getContentPane());
+ 82         getContentPane().setLayout(layout);
+ 83         layout.setHorizontalGroup(
+ 84             layout.createParallelGroup(javax.swing.GroupLayout.<span class="ST4">Alignment</span>.<span class="ST3">LEADING</span>)
+ 85             .addGroup(javax.swing.GroupLayout.<span class="ST4">Alignment</span>.<span class="ST3">TRAILING</span>, layout.createSequentialGroup()
+ 86                 .addGap(35, 35, 35)
+ 87                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.<span class="ST4">Alignment</span>.<span class="ST3">TRAILING</span>)
+ 88                     .addGroup(layout.createSequentialGroup()
+ 89                         .addGap(284, 284, 284)
+ 90                         .addComponent(<span class="ST2">button1</span>, javax.swing.GroupLayout.<span class="ST3">DEFAULT_SIZE</span>, 170, Short.<span class="ST3">MAX_VALUE</span>))
+ 91                     .addGroup(layout.createSequentialGroup()
+ 92                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.<span class="ST4">Alignment</span>.<span class="ST3">LEADING</span>)
+ 93                             .addComponent(<span class="ST2">jLabel1</span>, javax.swing.GroupLayout.<span class="ST3">PREFERRED_SIZE</span>, 94, javax.swing.GroupLayout.<span class="ST3">PREFERRED_SIZE</span>)
+ 94                             .addComponent(<span class="ST2">jLabel3</span>)
+ 95                             .addComponent(<span class="ST2">jLabel4</span>, javax.swing.GroupLayout.<span class="ST3">PREFERRED_SIZE</span>, 94, javax.swing.GroupLayout.<span class="ST3">PREFERRED_SIZE</span>))
+ 96                         .addPreferredGap(javax.swing.LayoutStyle.<span class="ST4">ComponentPlacement</span>.<span class="ST3">RELATED</span>, javax.swing.GroupLayout.<span class="ST3">DEFAULT_SIZE</span>, Short.<span class="ST3">MAX_VALUE</span>)
+ 97                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.<span class="ST4">Alignment</span>.<span class="ST3">LEADING</span>, <span class="literal">false</span>)
+ 98                             .addComponent(<span class="ST2">jFormattedTextField1</span>)
+ 99                             .addComponent(<span class="ST2">textField1</span>, javax.swing.GroupLayout.<span class="ST3">DEFAULT_SIZE</span>, 143, Short.<span class="ST3">MAX_VALUE</span>)
+100                             .addComponent(<span class="ST2">jFormattedTextField2</span>))))
+101                 .addGap(55, 55, 55))
+102         );
+103         layout.setVerticalGroup(
+104             layout.createParallelGroup(javax.swing.GroupLayout.<span class="ST4">Alignment</span>.<span class="ST3">LEADING</span>)
+105             .addGroup(layout.createSequentialGroup()
+106                 .addGap(71, 71, 71)
+107                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.<span class="ST4">Alignment</span>.<span class="ST3">LEADING</span>, <span class="literal">false</span>)
+108                     .addComponent(<span class="ST2">textField1</span>, javax.swing.GroupLayout.<span class="ST3">DEFAULT_SIZE</span>, 30, Short.<span class="ST3">MAX_VALUE</span>)
+109                     .addComponent(<span class="ST2">jLabel3</span>, javax.swing.GroupLayout.<span class="ST3">DEFAULT_SIZE</span>, javax.swing.GroupLayout.<span class="ST3">DEFAULT_SIZE</span>, Short.<span class="ST3">MAX_VALUE</span>))
+110                 .addGap(24, 24, 24)
+111                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.<span class="ST4">Alignment</span>.<span class="ST3">LEADING</span>, <span class="literal">false</span>)
+112                     .addComponent(<span class="ST2">jLabel1</span>, javax.swing.GroupLayout.<span class="ST3">DEFAULT_SIZE</span>, javax.swing.GroupLayout.<span class="ST3">DEFAULT_SIZE</span>, Short.<span class="ST3">MAX_VALUE</span>)
+113                     .addComponent(<span class="ST2">jFormattedTextField1</span>, javax.swing.GroupLayout.<span class="ST3">DEFAULT_SIZE</span>, 30, Short.<span class="ST3">MAX_VALUE</span>))
+114                 .addGap(18, 18, 18)
+115                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.<span class="ST4">Alignment</span>.<span class="ST3">LEADING</span>, <span class="literal">false</span>)
+116                     .addComponent(<span class="ST2">jLabel4</span>, javax.swing.GroupLayout.<span class="ST3">DEFAULT_SIZE</span>, javax.swing.GroupLayout.<span class="ST3">DEFAULT_SIZE</span>, Short.<span class="ST3">MAX_VALUE</span>)
+117                     .addComponent(<span class="ST2">jFormattedTextField2</span>, javax.swing.GroupLayout.<span class="ST3">DEFAULT_SIZE</span>, 32, Short.<span class="ST3">MAX_VALUE</span>))
+118                 .addGap(27, 27, 27)
+119                 .addComponent(<span class="ST2">button1</span>, javax.swing.GroupLayout.<span class="ST3">PREFERRED_SIZE</span>, 37, javax.swing.GroupLayout.<span class="ST3">PREFERRED_SIZE</span>)
+120                 .addContainerGap(33, Short.<span class="ST3">MAX_VALUE</span>))
+121         );
+122 
+123         pack();
+124     }<span class="comment">// &lt;/editor-fold&gt;                        </span>
+125 
+126     <span class="literal">private</span> <span class="literal">void</span> <span class="ST1">textField1ActionPerformed</span>(java.awt.event.ActionEvent evt) {                                           
+127         
+128     }                                          
+129 
+130     <span class="literal">private</span> <span class="literal">void</span> <span class="ST1">button1ActionPerformed</span>(java.awt.event.ActionEvent evt) <span class="literal">throws</span> PropertyVetoException {                                        
+131         StockAnalysisTool prediction = <span class="literal">new</span> StockAnalysisTool(); <span class="comment">// prediciton object initialised for simulation - see StockAnalysisTool Class</span>
+132         prediction.<span class="ST2">symbol</span> = <span class="ST2">textField1</span>.getText(); <span class="comment">//company name entered by user</span>
+133         prediction.<span class="ST2">startDate</span> = <span class="ST2">jFormattedTextField1</span>.getText(); <span class="comment">// start date of historical time series used in prediction entered by the user</span>
+134         prediction.<span class="ST2">endDate</span> = <span class="ST2">jFormattedTextField2</span>.getText(); <span class="comment">// end date of historical time series used in prediction entered by the user</span>
+135         dispose(); <span class="comment">// dispose dialog</span>
+136         
+137         
+138         <span class="literal">try</span> {
+139             LineChart graph = prediction.getHistorical(); <span class="comment">//generate graph of historical values</span>
+140             graph.setSelected(<span class="literal">true</span>);
+141             Main.<span class="ST3">menu</span>.add(graph); <span class="comment">// add graph to main interface</span>
+142             Main.<span class="ST3">menu</span>.pack();
+143             
+144             dispose();
+145         } <span class="literal">catch</span> (ParseException ex) {
+146             Logger.<span class="ST4">getLogger</span>(DialogueHistorical.<span class="literal">class</span>.getName()).log(Level.<span class="ST3">SEVERE</span>, <span class="literal">null</span>, ex);
+147         }
+148          
+149     }                                       
+150 
+151     <span class="comment">/**</span>
+152 <span class="comment">     * </span><span class="ST0">@param</span> args <span class="comment">the</span> <span class="comment">command</span> <span class="comment">line</span> <span class="comment">arguments</span>
+153      <span class="comment">*/</span>
+154     <span class="literal">public</span> <span class="literal">static</span> <span class="literal">void</span> <span class="ST5">main</span>(String args[]) {
+155         <span class="comment">/* Set the Nimbus look and feel */</span>
+156         <span class="comment">//&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot; Look and feel setting code (optional) &quot;&gt;</span>
+157         <span class="comment">/* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.</span>
+158 <span class="comment">         * For details see </span><span class="comment">http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html</span> 
+159 <span class="comment">         */</span>
+160         <span class="literal">try</span> {
+161             <span class="literal">for</span> (javax.swing.UIManager.<span class="ST4">LookAndFeelInfo</span> info : javax.swing.UIManager.<span class="ST4">getInstalledLookAndFeels</span>()) {
+162                 <span class="literal">if</span> (<span class="string">&quot;</span><span class="string">Nimbus</span><span class="string">&quot;</span>.equals(info.getName())) {
+163                     javax.swing.UIManager.<span class="ST4">setLookAndFeel</span>(info.getClassName());
+164                     <span class="literal">break</span>;
+165                 }
+166             }
+167         } <span class="literal">catch</span> (ClassNotFoundException ex) {
+168             java.util.logging.Logger.<span class="ST4">getLogger</span>(DialogueHistorical.<span class="literal">class</span>.getName()).log(java.util.logging.Level.<span class="ST3">SEVERE</span>, <span class="literal">null</span>, ex);
+169         } <span class="literal">catch</span> (InstantiationException ex) {
+170             java.util.logging.Logger.<span class="ST4">getLogger</span>(DialogueHistorical.<span class="literal">class</span>.getName()).log(java.util.logging.Level.<span class="ST3">SEVERE</span>, <span class="literal">null</span>, ex);
+171         } <span class="literal">catch</span> (IllegalAccessException ex) {
+172             java.util.logging.Logger.<span class="ST4">getLogger</span>(DialogueHistorical.<span class="literal">class</span>.getName()).log(java.util.logging.Level.<span class="ST3">SEVERE</span>, <span class="literal">null</span>, ex);
+173         } <span class="literal">catch</span> (javax.swing.UnsupportedLookAndFeelException ex) {
+174             java.util.logging.Logger.<span class="ST4">getLogger</span>(DialogueHistorical.<span class="literal">class</span>.getName()).log(java.util.logging.Level.<span class="ST3">SEVERE</span>, <span class="literal">null</span>, ex);
+175         }
+176         <span class="comment">//&lt;/editor-fold&gt;</span>
+177         <span class="comment">//&lt;/editor-fold&gt;</span>
+178 
+179         <span class="comment">/* Create and display the dialog */</span>
+180         java.awt.EventQueue.<span class="ST4">invokeLater</span>(<span class="literal">new</span> Runnable() {
+181             <span class="literal">public</span> <span class="literal">void</span> <span class="ST1">run</span>() {
+182                 DialogueHistorical dialog = <span class="literal">new</span> DialogueHistorical(<span class="literal">new</span> javax.swing.JFrame(), <span class="literal">true</span>);
+183                 dialog.addWindowListener(<span class="literal">new</span> java.awt.event.WindowAdapter() {
+184                     @Override
+185                     <span class="literal">public</span> <span class="literal">void</span> <span class="ST1">windowClosing</span>(java.awt.event.WindowEvent e) {
+186                         System.<span class="ST4">exit</span>(0);
+187                     }
+188                 });
+189                 dialog.setVisible(<span class="literal">true</span>);
+190             }
+191         });
+192     }
+193 
+194     <span class="comment">// Variables declaration - do not modify                     </span>
+195     <span class="literal">private</span> java.awt.Button <span class="ST2">button1</span>;
+196     <span class="literal">private</span> javax.swing.JFormattedTextField <span class="ST2">jFormattedTextField1</span>;
+197     <span class="literal">private</span> javax.swing.JFormattedTextField <span class="ST2">jFormattedTextField2</span>;
+198     <span class="literal">private</span> javax.swing.JLabel <span class="ST2">jLabel1</span>;
+199     <span class="literal">private</span> javax.swing.JLabel <span class="ST2">jLabel3</span>;
+200     <span class="literal">private</span> javax.swing.JLabel <span class="ST2">jLabel4</span>;
+201     <span class="literal">private</span> javax.swing.JLabel <span class="ST2">jLabel5</span>;
+202     <span class="literal">private</span> java.awt.TextField <span class="ST2">textField1</span>;
+203     <span class="comment">// End of variables declaration                   </span>
+204 }
+205 
+</pre></body>
+</html>

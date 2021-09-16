@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>Portfolio.java</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+body {color: #000000; background-color: #ffffff; font-family: Monospaced}
+pre {color: #000000; background-color: #ffffff; font-family: Monospaced}
+table {color: #000000; background-color: #e9e8e2; font-family: Monospaced}
+.ST0 {color: #969696; font-family: Monospaced; font-weight: bold}
+.ST1 {font-family: Monospaced; font-weight: bold}
+.comment {color: #969696}
+.ST2 {font-family: Monospaced; font-style: italic}
+.literal {color: #0000e6}
+.string {color: #ce7b00}
+-->
+</style>
+</head>
+<body>
+<table width="100%"><tr><td align="center">C:\Users\pade\Dropbox\Stocks\src\User\Portfolio.java</td></tr></table>
+<pre>
+ 1 <span class="comment">/*</span>
+ 2 <span class="comment"> * To change this license header, choose License Headers in Project Properties.</span>
+ 3 <span class="comment"> * To change this template file, choose Tools | Templates</span>
+ 4 <span class="comment"> * and open the template in the editor.</span>
+ 5 <span class="comment"> */</span>
+ 6 <span class="literal">package</span> User;
+ 7 
+ 8 <span class="literal">import</span> User.ManagePortfolio;
+ 9 <span class="literal">import</span> Database.Database;
+10 <span class="literal">import</span> java.sql.SQLException;
+11 <span class="literal">import</span> java.text.ParseException;
+12 <span class="literal">import</span> java.util.ArrayList;
+13 <span class="literal">import</span> java.util.logging.Level;
+14 <span class="literal">import</span> java.util.logging.Logger;
+15 <span class="literal">import</span> javax.swing.JFrame;
+16 <span class="literal">import</span> javax.swing.JInternalFrame;
+17 <span class="literal">import</span> javax.swing.JPanel;
+18 <span class="literal">import</span> javax.swing.JScrollPane;
+19 <span class="literal">import</span> javax.swing.JTable;
+20 <span class="literal">import</span> javax.swing.SwingUtilities;
+21 <span class="literal">import</span> javax.swing.table.DefaultTableModel;
+22 <span class="literal">import</span> <span class="literal">static</span> org.apache.commons.math3.fitting.leastsquares.LeastSquaresFactory.model;
+23 
+24 <span class="comment">/**</span>
+25 <span class="comment"> *</span>
+26 <span class="comment"> * </span><span class="ST0">@author</span> <span class="comment">pade</span>
+27  <span class="comment">*/</span>
+28 <span class="literal">public</span> <span class="literal">class</span> <span class="ST1">Portfolio</span> <span class="literal">extends</span> JInternalFrame {
+29 
+30     <span class="literal">public</span> <span class="ST1">Portfolio</span>(String user) <span class="literal">throws</span> SQLException, ParseException {
+31         <span class="literal">super</span>(<span class="string">&quot;</span><span class="string">Portfolio of</span><span class="string">&quot;</span>+ user,<span class="literal">false</span>,<span class="literal">true</span>);
+32 
+33         String[] columnNames = {<span class="string">&quot;</span><span class="string">Company</span><span class="string">&quot;</span>, <span class="string">&quot;</span><span class="string">Stock Value</span><span class="string">&quot;</span>, <span class="string">&quot;</span><span class="string">Volume</span><span class="string">&quot;</span>, <span class="string">&quot;</span><span class="string">Tick</span><span class="string">&quot;</span>};<span class="comment">//specify columns of table </span>
+34         ArrayList&lt;ArrayList&lt;Object&gt;&gt; data = ManagePortfolio.<span class="ST2">DisplayPortfolio</span>(user); <span class="comment">//----&gt; get portfolio</span>
+35 
+36         Object[][] ei = <span class="literal">new</span> Object[data.get(0).size()][];
+37         ArrayList&lt;ArrayList&lt;Object&gt;&gt; New = <span class="literal">new</span> ArrayList&lt;&gt;();
+38         <span class="comment">// converting arraylist of columns into a 2d array of rows</span>
+39         
+40         ArrayList&lt;String&gt; ticks = UserStocksTree.<span class="ST2">TickColumn</span>(ManagePortfolio.<span class="ST2">UserTree</span>(user));<span class="comment">// data set containing column of ticks for each company in user&#39;s portfolio</span>
+41         String[] TickData = <span class="literal">new</span> String[ticks.size()];
+42 
+43         <span class="literal">for</span> (<span class="literal">int</span> i = 0; i &lt; data.get(0).size(); i++) { <span class="comment">// loop </span>
+44 
+45             ArrayList&lt;Object&gt; row = <span class="literal">new</span> ArrayList&lt;&gt;();
+46             <span class="literal">for</span> (ArrayList&lt;Object&gt; data1 : data) {
+47                 row.add(data1.get(i)); <span class="comment">// create row of table with information about one particular stock </span>
+48                 
+49             }
+50             row.add(ticks.get(i)); <span class="comment">// add tick of particular stock to row</span>
+51 
+52             <span class="comment">// Perform equivalent `toArray` operation</span>
+53             Object[] copy = <span class="literal">new</span> Object[row.size()];
+54             <span class="literal">for</span> (<span class="literal">int</span> j = 0; j &lt; row.size(); j++) {
+55                 <span class="comment">// Manually loop and set individually</span>
+56                 copy[j] = row.get(j);
+57 
+58             }
+59 
+60             ei[i] = copy;
+61             New.add(row);
+62         }
+63         
+64         
+65         
+66         DefaultTableModel model = <span class="literal">new</span> DefaultTableModel(ei, columnNames);
+67       
+68         
+69         <span class="comment">//create JTable of user&#39;s portfolio </span>
+70         JTable table = <span class="literal">new</span> JTable(model);
+71         <span class="literal">this</span>.add(<span class="literal">new</span> JScrollPane(table));
+72         <span class="literal">this</span>.setSize(550, 400); <span class="comment">// dimensions of frame</span>
+73         <span class="literal">this</span>.setTitle(<span class="string">&quot;</span><span class="string">Portfolio of:  </span><span class="string">&quot;</span> + user);
+74         <span class="literal">this</span>.pack();
+75         <span class="literal">this</span>.setVisible(<span class="literal">true</span>);
+76     }
+77 
+78    
+79 
+80 }
+81 
+</pre></body>
+</html>
