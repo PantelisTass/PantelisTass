@@ -1,0 +1,309 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>StockAnalysisTool.java</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<style type="text/css">
+<!--
+body {color: #000000; background-color: #ffffff; font-family: Monospaced}
+pre {color: #000000; background-color: #ffffff; font-family: Monospaced}
+table {color: #000000; background-color: #e9e8e2; font-family: Monospaced}
+.ST0 {color: #969696; font-family: Monospaced; font-weight: bold}
+.ST1 {font-family: Monospaced; font-weight: bold}
+.comment {color: #969696}
+.ST2 {color: #009900}
+.ST3 {font-family: Monospaced; font-weight: bold; font-style: italic}
+.ST4 {font-family: Monospaced; font-style: italic}
+.literal {color: #0000e6}
+.string {color: #ce7b00}
+-->
+</style>
+</head>
+<body>
+<table width="100%"><tr><td align="center">C:\Users\pade\Dropbox\Stocks\src\StockAnalysis\StockAnalysisTool.java</td></tr></table>
+<pre>
+  1 <span class="literal">package</span> StockAnalysis;
+  2 
+  3 <span class="literal">import</span> <span class="literal">static</span> java.lang.Math.exp;
+  4 <span class="literal">import</span> <span class="literal">static</span> java.lang.Math.log;
+  5 <span class="literal">import</span> <span class="literal">static</span> java.lang.Math.pow;
+  6 <span class="literal">import</span> java.security.NoSuchAlgorithmException;
+  7 <span class="literal">import</span> java.text.DateFormat;
+  8 <span class="literal">import</span> java.text.ParseException;
+  9 <span class="literal">import</span> java.text.SimpleDateFormat;
+ 10 <span class="literal">import</span> java.util.*;
+ 11 <span class="literal">import</span> java.util.concurrent.ThreadLocalRandom;
+ 12 
+ 13 <span class="comment">/**</span>
+ 14 <span class="comment"> *</span>
+ 15 <span class="comment"> * </span><span class="ST0">@author</span> <span class="comment">pade</span>
+ 16  <span class="comment">*/</span>
+ 17 <span class="literal">public</span> <span class="literal">class</span> <span class="ST1">StockAnalysisTool</span> {
+ 18 
+ 19     <span class="comment">/**</span>
+ 20 <span class="comment">     *   </span><span class="comment">Name</span> <span class="comment">of</span> <span class="comment">company</span>
+ 21      <span class="comment">*/</span>
+ 22     
+ 23     <span class="literal">public</span> String <span class="ST2">symbol</span>;
+ 24     <span class="comment">/**</span>
+ 25 <span class="comment">     *   </span><span class="comment">Start</span> <span class="comment">date</span> <span class="comment">of</span> <span class="comment">historical</span> <span class="comment">values</span>
+ 26      <span class="comment">*/</span>
+ 27     <span class="literal">public</span> String <span class="ST2">startDate</span>;
+ 28     <span class="comment">/**</span>
+ 29 <span class="comment">     *   </span><span class="comment">Name</span> <span class="comment">of</span> <span class="comment">company</span>
+ 30 <span class="comment">     *   </span><span class="comment">start</span> <span class="comment">date</span> <span class="comment">of</span> <span class="comment">historical</span> <span class="comment">values</span>
+ 31 <span class="comment">     *   </span><span class="comment">end</span> <span class="comment">date</span> <span class="comment">of</span> <span class="comment">historical</span> <span class="comment">values</span>
+ 32      <span class="comment">*/</span>
+ 33     <span class="literal">public</span> String <span class="ST2">endDate</span>;
+ 34     <span class="comment">/**</span>
+ 35 <span class="comment">     *   </span>
+ 36 <span class="comment">     *   </span><span class="comment">Number</span> <span class="comment">of</span> <span class="comment">days</span> <span class="comment">in</span> <span class="comment">the</span> <span class="comment">future</span> <span class="comment">of</span> <span class="comment">the</span> <span class="comment">stock</span> <span class="comment">projection</span>
+ 37 <span class="comment">     *</span>
+ 38      <span class="comment">*/</span>
+ 39     <span class="literal">public</span> <span class="literal">int</span> <span class="ST2">val</span>;
+ 40     <span class="comment">/**</span>
+ 41 <span class="comment">     *  </span><span class="comment">Number</span> <span class="comment">of</span> <span class="comment">predictions</span>
+ 42 <span class="comment">     *</span>
+ 43      <span class="comment">*/</span>
+ 44     <span class="literal">public</span> <span class="literal">int</span> <span class="ST2">N</span>;
+ 45     <span class="comment">/**</span>
+ 46 <span class="comment">     * </span><span class="comment">List</span> <span class="comment">for</span> <span class="comment">storing</span> <span class="comment">historical</span> <span class="comment">stock</span> <span class="comment">values</span> <span class="comment">retrieved</span> <span class="comment">from</span> <span class="comment">the</span> <span class="comment">web</span>
+ 47      <span class="comment">*/</span>
+ 48     List&lt;StockInfo&gt; <span class="ST2">stock_info</span>;
+ 49     <span class="comment">/**</span>
+ 50 <span class="comment">     * </span><span class="comment">List</span> <span class="comment">where</span> <span class="comment">predictions</span> <span class="comment">will</span> <span class="comment">be</span> <span class="comment">stored</span>
+ 51      <span class="comment">*/</span>
+ 52     ArrayList&lt;Prediction&gt; <span class="ST2">predictions</span> = <span class="literal">new</span> ArrayList&lt;&gt;();
+ 53 
+ 54     <span class="comment">/**</span>
+ 55 <span class="comment">     * </span><span class="ST0">Finds</span> <span class="ST0">the</span> <span class="ST0">mean</span> <span class="ST0">of</span> <span class="ST0">a</span> <span class="ST0">list</span> <span class="ST0">of</span><span class="ST0"> &#39;</span><span class="ST0">real</span><span class="ST0">&#39; </span><span class="ST0">numbers</span>
+ 56 <span class="comment">     * </span><span class="ST0">@param</span> m <span class="comment">list</span> <span class="comment">of</span> <span class="comment">integers</span> <span class="comment">for</span> <span class="comment">which</span> <span class="comment">the</span> <span class="comment">mean</span> <span class="comment">is</span> <span class="comment">calculated</span>
+ 57 <span class="comment">     * </span><span class="ST0">@return</span> <span class="comment">mean</span> 
+ 58 <span class="comment">     * </span><span class="ST0">@see</span> <span class="comment">meanInt</span>
+ 59      <span class="comment">*/</span>
+ 60     <span class="literal">public</span> <span class="literal">static</span> <span class="literal">double</span> <span class="ST3">mean</span>(ArrayList&lt;Double&gt; m) {
+ 61         <span class="literal">double</span> sum = 0;
+ 62         <span class="literal">for</span> (Double m1 : m) {
+ 63             sum += m1;
+ 64         }
+ 65         <span class="literal">return</span> sum / m.size();
+ 66     }
+ 67 
+ 68     <span class="comment">/**</span>
+ 69 <span class="comment">     * </span><span class="ST0">Finds</span> <span class="ST0">the</span> <span class="ST0">mean</span> <span class="ST0">of</span> <span class="ST0">a</span> <span class="ST0">list</span> <span class="ST0">of</span> <span class="ST0">integers</span>
+ 70 <span class="comment">     * </span><span class="ST0">@param</span> n <span class="comment">list</span> <span class="comment">of</span> <span class="comment">integers</span> <span class="comment">for</span> <span class="comment">which</span> <span class="comment">the</span> <span class="comment">mean</span> <span class="comment">is</span> <span class="comment">calculated</span>
+ 71 <span class="comment">     * </span><span class="ST0">@return</span> <span class="comment">mean</span> 
+ 72 <span class="comment">     * </span><span class="ST0">@see</span> <span class="comment">mean</span> 
+ 73      <span class="comment">*/</span>
+ 74     <span class="literal">public</span> <span class="literal">static</span> <span class="literal">int</span> <span class="ST3">meanInt</span>(ArrayList&lt;Integer&gt; n) {
+ 75         <span class="literal">int</span> sum = 0;
+ 76         <span class="literal">for</span> (Integer m1 : n) {
+ 77             sum += m1;
+ 78         }
+ 79         <span class="literal">return</span> (<span class="literal">int</span>) sum / n.size();
+ 80     }
+ 81     
+ 82     <span class="comment">/**</span>
+ 83 <span class="comment">     * </span><span class="ST0">Finds</span> <span class="ST0">the</span> <span class="ST0">variance</span> <span class="ST0">of</span> <span class="ST0">a</span> <span class="ST0">list</span> <span class="ST0">of</span> <span class="ST0">integers</span>
+ 84 <span class="comment">     * </span><span class="ST0">@param</span> m <span class="comment">list</span> <span class="comment">of</span> <span class="comment">integers</span> <span class="comment">for</span> <span class="comment">which</span> <span class="comment">the</span> <span class="comment">mean</span> <span class="comment">is</span> <span class="comment">calculated</span>
+ 85 <span class="comment">     * </span><span class="ST0">@return</span> <span class="comment">variance</span>  
+ 86 <span class="comment">     * </span>
+ 87      <span class="comment">*/</span>
+ 88 
+ 89     <span class="literal">public</span> <span class="literal">static</span> <span class="literal">double</span> <span class="ST3">Var</span>(ArrayList&lt;Double&gt; m) {
+ 90         <span class="literal">double</span> sum = 0;
+ 91         <span class="literal">for</span> (Double m1 : m) {
+ 92             sum += <span class="ST4">pow</span>(m1 - <span class="ST4">mean</span>(m), 2);
+ 93         }
+ 94         <span class="literal">return</span> sum / m.size();
+ 95     }
+ 96     
+ 97     <span class="comment">/**</span>
+ 98 <span class="comment">     * </span><span class="ST0">Displays</span> <span class="ST0">historical</span> <span class="ST0">values</span> <span class="ST0">of</span> <span class="ST0">stocks</span> <span class="ST0">given</span> <span class="ST0">preconditions</span> <span class="ST0">being</span> <span class="ST0">the</span> <span class="ST0">fields</span> <span class="ST0">in</span> <span class="ST0">the</span> <span class="ST0">class</span>
+ 99 <span class="comment">     * </span><span class="ST0">@throws</span> <span class="comment">ParseException</span> 
+100      <span class="comment">*/</span>
+101 
+102     <span class="literal">public</span> LineChart <span class="ST1">getHistorical</span>() <span class="literal">throws</span> ParseException {
+103         Extrapolate();
+104 
+105         <span class="literal">return</span> <span class="literal">new</span> LineChart(<span class="ST2">symbol</span>, <span class="ST2">stock_info</span>);
+106 
+107     }
+108     
+109     <span class="comment">/**</span>
+110 <span class="comment">     * </span><span class="ST0">Displays</span> <span class="ST0">the</span> <span class="ST0">future</span> <span class="ST0">stock</span> <span class="ST0">prices</span> <span class="ST0">given</span> 
+111 <span class="comment">     * </span><span class="ST0">@throws</span> <span class="comment">ParseException</span> 
+112      <span class="comment">*/</span>
+113     
+114     <span class="literal">public</span> LineChart <span class="ST1">DisplayFuture</span>() <span class="literal">throws</span> ParseException{
+115         Extrapolate();
+116         
+117         <span class="literal">return</span> <span class="literal">new</span> LineChart(<span class="ST2">symbol</span>, <span class="ST2">stock_info</span>, <span class="ST2">predictions</span>);
+118     
+119     }
+120     
+121     
+122     
+123     <span class="comment">/**</span>
+124 <span class="comment">     * </span><span class="ST0">Implements</span> <span class="ST0">stochastic</span> <span class="ST0">algorithm</span> <span class="ST0">based</span> <span class="ST0">on</span> <span class="ST0">geometric</span> <span class="ST0">Brownian</span> <span class="ST0">motion</span>
+125 <span class="comment">     * </span><span class="ST0">for</span> <span class="ST0">the</span> <span class="ST0">generation</span> <span class="ST0">of</span> <span class="ST0">predicted</span> <span class="ST0">stocks</span><span class="ST0"> - </span><span class="ST0">see</span> <span class="ST0">Figure</span><span class="ST0"> 7 </span><span class="ST0">in</span> <span class="ST0">Criterion</span> <span class="ST0">B</span><span class="ST0"> - </span><span class="ST0">Design</span>
+126 <span class="comment">     * </span>
+127 <span class="comment">     * </span>
+128 <span class="comment">     * </span><span class="ST0">@throws</span> <span class="comment">ParseException</span> 
+129      <span class="comment">*/</span>
+130 
+131     <span class="literal">public</span> <span class="literal">void</span>  <span class="ST1">Extrapolate</span>() <span class="literal">throws</span> ParseException {
+132         <span class="ST2">stock_info</span> = Stocks.<span class="ST4">getStocksBetweenDates</span>(<span class="ST2">symbol</span>, <span class="ST2">startDate</span>, <span class="ST2">endDate</span>);
+133 
+134         <span class="literal">long</span> interval = 24 * 1000 * 60 * 60; <span class="comment">// 1 day in milliseconds</span>
+135 
+136         ArrayList&lt;Prediction&gt; a = <span class="literal">new</span> ArrayList&lt;&gt;(); <span class="comment">//initialising list of &#39;prediction&#39; objects that will store future stock values</span>
+137         <span class="literal">for</span> (<span class="literal">int</span> i = 0; i &lt; <span class="ST2">N</span>; i++) {
+138             Prediction p = <span class="literal">new</span> Prediction();
+139             Prediction temp = p;
+140             <span class="ST2">predictions</span>.add(temp);
+141 
+142         }
+143 
+144         <span class="literal">for</span> (<span class="literal">int</span> i = 0; i &lt; <span class="ST2">N</span>; i++) {
+145 
+146             <span class="ST2">predictions</span>.get(i).<span class="ST2">PeriodicReturns</span> = <span class="literal">new</span> ArrayList&lt;&gt;(); <span class="comment">// initialising list which will contain periodic returns (see figure 7 Criterion B -design)</span>
+147 
+148         }
+149 
+150         DateFormat formatter;
+151         formatter = <span class="literal">new</span> SimpleDateFormat(<span class="string">&quot;</span><span class="string">yyyy-MM-dd</span><span class="string">&quot;</span>);
+152         Date current = (Date) formatter.parse(<span class="ST2">endDate</span>);
+153         <span class="literal">long</span> finalTime = current.getTime() + <span class="ST2">val</span> * interval;
+154         Date finalDate = <span class="literal">new</span> Date(finalTime);
+155         String Final = formatter.format(finalDate);
+156         <span class="literal">long</span> iterateTime = current.getTime() + interval ;
+157         Date iterateDate = <span class="literal">new</span> Date(iterateTime);
+158         String StartDateIterate = formatter.format(iterateDate);
+159 
+160         List&lt;String&gt; futureDates = Stocks.<span class="ST4">getDatesBetween</span>(StartDateIterate, Final);   <span class="comment">//create list of future dates</span>
+161 
+162 
+163         <span class="literal">for</span> (<span class="literal">int</span> i = 0; i &lt; <span class="ST2">N</span>; i++) {
+164 
+165             <span class="ST2">predictions</span>.get(i).<span class="ST2">timeSeriesProjection</span> = <span class="literal">new</span> ArrayList&lt;&gt;();
+166 
+167         }
+168 
+169         <span class="literal">for</span> (StockInfo stock_info1 : <span class="ST2">stock_info</span>) {
+170             <span class="literal">for</span> (<span class="literal">int</span> i = 0; i &lt; <span class="ST2">N</span>; i++) {
+171 
+172                 <span class="ST2">predictions</span>.get(i).<span class="ST2">timeSeriesProjection</span>.add(stock_info1.getClose());
+173 
+174             }
+175 
+176         }
+177         <span class="literal">for</span> (<span class="literal">int</span> i = 0; i &lt; <span class="ST2">stock_info</span>.size() - 1; i++) {
+178 
+179             <span class="literal">for</span> (<span class="literal">int</span> j = 0; j &lt; <span class="ST2">N</span>; j++) {
+180                 <span class="comment">// calculation of periodic returns (see figure 7 Criterion B -design)</span>
+181                 <span class="ST2">predictions</span>.get(j).<span class="ST2">PeriodicReturns</span>.add(<span class="ST4">log</span>(<span class="ST2">predictions</span>.get(j).<span class="ST2">timeSeriesProjection</span>.get(i + 1) / <span class="ST2">predictions</span>.get(j).<span class="ST2">timeSeriesProjection</span>.get(i)));
+182 
+183             }
+184 
+185         }
+186 
+187         <span class="literal">int</span> mag = <span class="ST2">stock_info</span>.size();
+188 
+189         <span class="literal">for</span> (<span class="literal">int</span> i = 0; i &lt; <span class="ST2">N</span>; i++) {
+190             <span class="comment">//initialising list of future date stokc objects</span>
+191             <span class="ST2">predictions</span>.get(i).<span class="ST2">futureStocks</span> = <span class="literal">new</span> ArrayList&lt;&gt;();
+192 
+193         }
+194 
+195 
+196         <span class="literal">for</span> (<span class="literal">int</span> j = 0; j &lt; <span class="ST2">val</span>; j++) {
+197 
+198             ArrayList&lt;Double&gt; Returns = <span class="literal">new</span> ArrayList&lt;&gt;();
+199             <span class="literal">for</span> (<span class="literal">int</span> i = 0; i &lt; <span class="ST2">N</span>; i++) {
+200                 <span class="comment">//formula for stochastic process modelling stock market (see figure 7 Criterion B -design)</span>
+201                 Returns.add(<span class="ST2">predictions</span>.get(i).<span class="ST2">timeSeriesProjection</span>.get(mag - 1 + j) * <span class="ST4">exp</span>(<span class="ST4">mean</span>(<span class="ST2">predictions</span>.get(i).<span class="ST2">PeriodicReturns</span>) - <span class="ST4">Var</span>(<span class="ST2">predictions</span>.get(i).<span class="ST2">PeriodicReturns</span>) * 0.5 + <span class="ST4">pow</span>(<span class="ST4">Var</span>(<span class="ST2">predictions</span>.get(i).<span class="ST2">PeriodicReturns</span>), 0.5) * ThreadLocalRandom.<span class="ST4">current</span>().nextGaussian()));
+202                 <span class="ST2">predictions</span>.get(i).<span class="ST2">timeSeriesProjection</span>.add(Returns.get(i));
+203                 <span class="ST2">predictions</span>.get(i).<span class="ST2">PeriodicReturns</span>.add(<span class="ST4">log</span>(Returns.get(i) / <span class="ST2">predictions</span>.get(i).<span class="ST2">timeSeriesProjection</span>.get(mag - 1 + j)));
+204                 <span class="ST2">predictions</span>.get(i).<span class="ST2">futureStocks</span>.add(<span class="literal">new</span> StockInfo(futureDates.get(j), Returns.get(i)));
+205 
+206             }
+207 
+208         }
+209 
+210         
+211 
+212     }
+213 
+214     <span class="comment">/**</span>
+215 <span class="comment">     * </span><span class="ST0">Divides</span> <span class="ST0">the</span> <span class="ST0">range</span> <span class="ST0">of</span> <span class="ST0">generated</span> <span class="ST0">and</span> <span class="ST0">historical</span> <span class="ST0">stock</span> <span class="ST0">values</span> <span class="ST0">and</span> <span class="ST0">subdivides</span> <span class="ST0">it</span> 
+216 <span class="comment">     * </span><span class="ST0">into</span> <span class="ST0">bins</span> <span class="ST0">in</span> <span class="ST0">each</span> <span class="ST0">of</span> <span class="ST0">which</span> <span class="ST0">the</span> <span class="ST0">frequency</span> <span class="ST0">of</span> <span class="ST0">stock</span> <span class="ST0">prices</span> <span class="ST0">in</span> <span class="ST0">that</span> <span class="ST0">range</span> <span class="ST0">is</span> <span class="ST0">counted</span><span class="ST0">.</span> 
+217 <span class="comment">     * </span><span class="comment">Finally</span><span class="comment">, </span><span class="comment">the</span> <span class="comment">frequency</span> <span class="comment">of</span> <span class="comment">the</span> <span class="comment">stock</span> <span class="comment">prices</span> <span class="comment">are</span> <span class="comment">plotted</span> <span class="comment">against</span> <span class="comment">the</span> <span class="comment">bins</span> <span class="comment">in</span> <span class="comment">a</span> <span class="comment">LineChart</span><span class="comment">.</span>
+218 <span class="comment">     * </span>
+219 <span class="comment">     * </span>
+220 <span class="comment">     * </span><span class="ST0">@param</span> A <span class="comment">the</span> <span class="comment">number</span> <span class="comment">of</span> <span class="comment">bins</span><span class="comment">/</span><span class="comment">intervals</span>
+221 <span class="comment">     * </span><span class="ST0">@throws</span> <span class="comment">ParseException</span>
+222      <span class="comment">*/</span>
+223 
+224     <span class="literal">public</span> LineChart <span class="ST1">getDistribution</span>(<span class="literal">int</span> A <span class="comment">/* number of intervals */</span>) <span class="literal">throws</span> ParseException {
+225         Extrapolate();
+226         ArrayList&lt;Double&gt; values = <span class="literal">new</span> ArrayList&lt;&gt;();
+227         ArrayList&lt;Double&gt; intervals = <span class="literal">new</span> ArrayList&lt;&gt;();
+228         <span class="comment">//list of intervals (bins) see below</span>
+229         <span class="literal">int</span> bins[] = <span class="literal">new</span> <span class="literal">int</span>[A];
+230         <span class="literal">int</span> count = 0;
+231         <span class="literal">for</span> (Prediction prediction : <span class="ST2">predictions</span>) {<span class="comment">// iterate through predictions of future stocks </span>
+232             <span class="literal">for</span> (<span class="literal">int</span> i = 0; i &lt; prediction.<span class="ST2">timeSeriesProjection</span>.size() - <span class="ST2">stock_info</span>.size(); i++) {
+233                 <span class="comment">// collect predicted stock value of all predictions and add them to one list</span>
+234                 values.add(prediction.<span class="ST2">timeSeriesProjection</span>.get(i + <span class="ST2">stock_info</span>.size() - 1));
+235             }
+236         }
+237         <span class="comment">//find maximum and minimum value of stock prices in determination of bounds of graph of the distribution of the prices thereof</span>
+238         <span class="literal">double</span> min = Collections.<span class="ST4">min</span>(values);
+239         <span class="literal">double</span> max = Collections.<span class="ST4">max</span>(values);
+240 
+241         <span class="comment">//creation of intervals (bins)wherein stock value lie in.</span>
+242         <span class="literal">for</span> (<span class="literal">int</span> i = 0; i &lt; A; i++) {
+243             bins[i] = 0;
+244         }
+245 
+246         <span class="literal">for</span> (<span class="literal">int</span> i = 0; i &lt; A; i++) {
+247             <span class="comment">// iterate through array of predictions </span>
+248             <span class="literal">for</span> (Double value : values) {
+249                 <span class="comment">//if the value in the array lies within some interval, the frequency of prices within the bin is incremented</span>
+250                 <span class="literal">if</span> (value &gt;= min + (max - min) * i / A &amp;&amp; value &lt;= min + (max - min) * (i + 1) / A) {
+251                     bins[i] += 1;
+252                     count += 1;
+253                 }
+254             }
+255 
+256         }
+257 
+258         ArrayList&lt;Double&gt; Bins = <span class="literal">new</span> ArrayList&lt;&gt;();
+259 
+260         <span class="literal">for</span> (<span class="literal">int</span> i = 0; i &lt; A; i++) {
+261             <span class="literal">double</span> d = bins[i];
+262             Bins.add(d / count); <span class="comment">//normalising frequency count (total number of predictions) to given an approximate probability of occurrence</span>
+263         }
+264 
+265         <span class="literal">for</span> (<span class="literal">int</span> i = 0; i &lt; A; i++) {
+266             <span class="comment">//the interval is represented by its middle value</span>
+267             intervals.add(min + (max - min) * i * 0.5 / A);
+268 
+269         }
+270 
+271      
+272         Double d = Collections.<span class="ST4">max</span>(Bins);
+273         <span class="literal">int</span> x = Bins.indexOf(d);
+274            <span class="comment">// return chartPanel Object with stock price &#39;probability&#39; distribution</span>
+275            <span class="literal">return</span> <span class="literal">new</span> LineChart(<span class="ST2">symbol</span>, intervals, Bins);
+276     }
+277 
+278     
+279 
+280     
+281 
+282 }
+283 
+</pre></body>
+</html>
